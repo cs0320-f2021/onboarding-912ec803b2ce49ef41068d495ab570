@@ -2,6 +2,9 @@ package edu.brown.cs.student.main;
 
 import java.util.List;
 
+/**
+ * A naive implementation of the {@link StarCollection} interface.
+ */
 public class NaiveStarCollection implements StarCollection {
 
   private List<Star> stars;
