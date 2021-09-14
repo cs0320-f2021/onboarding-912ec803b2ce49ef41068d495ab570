@@ -11,6 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the naive_neighbors command.
+ */
 public class NaiveNeighborsCommand implements REPLCommand {
 
   private StarCollection starCollection;

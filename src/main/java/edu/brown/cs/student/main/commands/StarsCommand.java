@@ -12,6 +12,9 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of the stars command.
+ */
 public class StarsCommand implements REPLCommand {
 
   private final StarCollection starCollection;
