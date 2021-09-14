@@ -6,10 +6,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import edu.brown.cs.student.main.commands.NaiveNeighborsCommand;
+import edu.brown.cs.student.main.commands.StarsCommand;
+import edu.brown.cs.student.main.repl.REPL;
+import edu.brown.cs.student.main.repl.REPLCommand;
+import edu.brown.cs.student.main.repl.REPLTokenizer;
+import edu.brown.cs.student.main.repl.StdinREPLInputSource;
 import freemarker.template.Configuration;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -60,38 +68,15 @@ public final class Main {
       runSparkServer((int) options.valueOf("port"));
     }
 
-    MathBot mathBot = new MathBot();
-    try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-      String input;
-      while ((input = br.readLine()) != null) {
-        try {
-          input = input.trim();
-          String[] arguments = input.split(" ");
+    // Set up REPL commands:
+    NaiveStarCollection starCollection = new NaiveStarCollection(new ArrayList<>());
+    HashMap<String, REPLCommand> commands = new HashMap<>();
+    commands.put("stars", new StarsCommand(starCollection));
+    commands.put("naive_neighbors", new NaiveNeighborsCommand(starCollection));
 
-          if (arguments.length > 0) {
-            String command = arguments[0];
-            switch (command) {
-              case "add":
-                Integer v1 = Integer.valueOf(arguments[1]);
-                Integer v2 = Integer.valueOf(arguments[2]);
-                mathBot.add(v1, v2);
-                break;
-              case "subtract":
-                Integer v1 = Integer.valueOf(arguments[1]);
-                Integer v2 = Integer.valueOf(arguments[2]);
-                mathBot.subtract(v1, v2);
-                break;
-            }
-          }
-        } catch (Exception e) {
-          // e.printStackTrace();
-          System.out.println("ERROR: We couldn't process your input");
-        }
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("ERROR: Invalid input for REPL");
-    }
+    // Start running the REPL:
+    REPL repl = new REPL(new StdinREPLInputSource(), new REPLTokenizer(), commands);
+    repl.startREPL();
 
   }
 
