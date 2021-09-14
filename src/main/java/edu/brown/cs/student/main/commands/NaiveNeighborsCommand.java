@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  */
 public class NaiveNeighborsCommand implements REPLCommand {
 
-  private StarCollection starCollection;
+  private final StarCollection starCollection;
 
   public NaiveNeighborsCommand(StarCollection starCollection) {
     this.starCollection = starCollection;
